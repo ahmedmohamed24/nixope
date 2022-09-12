@@ -1,50 +1,47 @@
-## Getting started:
-1. Fork this Repository
+## Nixope Task
 
-    ``` git clone https://github.com/ahmedmohamed24/docker-src.git docker-laravel ```
-1. change the current directory to project path ex:
 
-      ``` cd docker-laravel ```
-1. change your database credentials in *docker-compose.yml* file
 
+## Features:
+1. Docker containers for 3 services (NGINX, php, and Mysql)
+
+1. Users
+  1.1 create a new user with *username*, *email* required, and optionally attach one or more roles.
+  1.2 update a user data.
+  1.3 soft delete the user.
+  1.4 paginate among users in the database.
+  1.5 show a specific user resource.
+
+1. Dispatch event to generate an activation link and send it via email.
+    > listener would append the info to the log file
+
+1. Automated test cases to cover most of the scenarios in the code.
+
+
+
+## Installation:
+1. install docker and docker-compose
+1. ```git clone https://github.com/ahmedmohamed24/nixope.git```
+2. ``` cd nixope ```
+1. set environment variables for docker-compose
+  ```vim .env```
     ```
-    environment:
-      MYSQL_DATABASE: shop
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-
+    DATABASE_NAME=nixope
+    DATABASE_USER=root
+    DATABASE_PASSWORD=verystrongpassword
+    DATABASE_ROOT_PASSWORD=verystrongpassword
     ```
-    *docker will create your database with the provided credentials during installation process*
-    ***
-
-1. ``` docker-compose build && docker-compose up -d ```
-
-    **alert:** </span> if there is a server running in your machine, you should stop it or change port 80 in docker-compose.yml to another port(8000)
+3. ``` docker-compose up -d --build```
+4. run test cases ```docker exec -it php php artisan test```
+1. ```cd src && cp .env.example .env```
+1. set laravel database environment variables in `./src/.env`:
     ```
-    services:
-      app:
-        build:
-          context: .
-          dockerfile: nginx.dockerfile
-          container_name: nginx
-          ports:
-            - "8000:80"
+    DB_CONNECTION=mysql
+    DB_HOST=mysql
+    DB_PORT=3306
+    DB_DATABASE=nixope
+    DB_USERNAME=root
+    DB_PASSWORD=verystrongpassword
+    QUEUE_CONNECTION=database
     ```
-    *you can do this with each service*
-
-1. install new laravel project in `src` folder or copy an existing one, to install new project run ```cd src && docker-compose exec php composer create-project --prefer-dist laravel/laravel . && cd ../```
-1. Install dependencies with composer
-
-      ```docker-compose exec php composer install ```
-1. run migrations
-
-     ``` docker-compose exec php php /var/www/html/artisan migrate ```
-1. run seeder
-
-     ``` docker-compose exec php php /var/www/html/artisan db:seed --class=DatabaseSeeder```
-1. run testcases
-
-      ``` docker-compose exec php php /var/www/html/artisan test```
+5. import the postman collection `./postman.json`, and start using it
